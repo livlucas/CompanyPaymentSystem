@@ -15,11 +15,12 @@ import java.util.List;
 public class Company {
     private String name;
     private String website;
-    private List<Employee> employees = new ArrayList<Employee>();
+    private List<Employee> employees;
 
     public Company(String name, String website) {
         this.name = name;
         this.website = website;
+        this.employees = new ArrayList<Employee>();
     }
 
     public String getName() {
@@ -50,17 +51,30 @@ public class Company {
         this.employees.add(employee);
     }
     
+    public void giveRewardEmployees() {
+        for(int i = 0; i < this.employees.size(); i++) {
+            this.employees.get(i).setIsRewarded(true);
+        }
+    }
+    
     public void employeeList(){
-        System.out.println("\nName\t\t\tStatus\t\tHours\tRate\tWeekly Payment\tReward");
+        Employee employee;
+        
+        System.out.println("\nName\t\tStatus\t\tHours\tRate\tWeekly Payment");
         System.out.println("------------------------------------------------------------------------------");
         
-        for(int i = 0; i < this.employees.size(); i++)
-            System.out.println(i + ". " + this.employees.get(i).getName() + "\t\t" + 
-                    this.employees.get(i).getStatusToString() + "\t\t" + 
-                    this.employees.get(i).getHour() + "\t" + 
-                    this.employees.get(i).getRate() + "\t" + 
-                    this.employees.get(i).getWeeklyPayAmount(this.employees.get(i)) + "\t\t" +
-                    this.employees.get(i).getRewardToString(this.employees.get(i)));
+        for(int i = 0; i < this.employees.size(); i++) {
+            employee = this.employees.get(i);
+        
+            System.out.println(
+                    i + ". " + employee.getName() + "\t\t" + 
+                    employee.contractTypeToString() + "\t\t" + 
+                    employee.getHour() + "\t" + 
+                    employee.getRate() + "\t" + 
+                    "$" + String.format("%1$,.2f", employee.calculateWeeklyPayment()) + 
+                        (employee.getIsRewarded() ? "*" : "") + "\t\t"
+            );
+        }
         
         System.out.println("------------------------------------------------------------------------------\n");
     }

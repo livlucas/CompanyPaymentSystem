@@ -9,20 +9,20 @@ package fourthbank;
  *
  * @author livia
  */
-public class Employee extends Salary{
+public class Employee extends Salary {
     private String name;
     private String email;
     private String phone;
 
-    public Employee(String name, String email, String phone, Double rate, Double hour, Double reward, Boolean status) {
-        super(rate, hour, reward, status);
+    public Employee(String name, String email, String phone, Double hour, Double rate, Boolean isRewarded, Boolean contractType) {
+        super(hour, rate, isRewarded, contractType);
         this.name = name;
         this.email = email;
         this.phone = phone;
     }
     
-    public Employee(Double rate, Double hour, Double reward, Boolean status) {
-        super(rate, hour, reward, status);
+    public Employee(Double hour, Double rate, Boolean isRewarded, Boolean contractType) {
+        super(hour, rate, isRewarded, contractType);
     }
 
     public String getName() {
