@@ -86,7 +86,7 @@ public class Salary {
             }
         } else { //hourly contract
             overtime = this.getOvertimeHours() * this.rate * OVERTIME_BONUS;
-            amount = (WEEKLY_HOURS * this.rate) + overtime;            
+            amount = (Math.min(this.hour, WEEKLY_HOURS) * this.rate) + overtime;            
         }
 
         return amount;
