@@ -34,9 +34,8 @@ public class Application {
                     break;
                     
                 case 3:
-                    break;
-                    
-                case 4:
+                    this.company.giveRewardEmployees();
+                    System.out.println("Salaried employees rewarded.");
                     break;
                     
                 case 5:
@@ -56,7 +55,7 @@ public class Application {
         System.out.println(" 1. Add Employee");
         System.out.println(" 2. List Employees");
         System.out.println(" 3. Reward Employee");
-        System.out.println(" 4. Print Week Payment");
+        System.out.println("  . --------------");
         System.out.println(" 5. Exit");
         System.out.print  (" Option: ");
     }
@@ -69,15 +68,17 @@ public class Application {
         System.out.print("Name: ");
         String name = keyboard.nextLine();
 
+        System.out.print("Status (0-Salary/1-Hourly): ");
+        Boolean status = keyboard.nextInt() == 1;
+
         System.out.print("Rate: ");
         Double rate = keyboard.nextDouble();
 
         System.out.print("Hour: ");
         Double hour = keyboard.nextDouble();
         
-        System.out.print("Status (0-Salary/1-Hourly): ");
-        Boolean status = keyboard.nextInt() == 1;
         
-        this.company.addEmpolyee(new Employee(name, "email@example.com", "(415) 342 7670", rate, hour, 0.00, status));
+        
+        this.company.addEmpolyee(new Employee(name, "email@example.com", "(415) 342 7670", hour, rate, false, status));
     }
 }

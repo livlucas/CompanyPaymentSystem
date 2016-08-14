@@ -10,16 +10,20 @@ package fourthbank;
  * @author livia
  */
 public class Salary {
+    private static final Double WEEKLY_HOURS = 40.0;
+    private static final Double REWARD_BONUS = 1.1;
+    private static final Double OVERTIME_BONUS = 2.0;
+    
     private Double rate;
     private Double hour;
-    private Double reward;
-    private Boolean status;
+    private Boolean isRewarded;
+    private Boolean contractType;
 
-    public Salary(Double hour, Double rate, Double reward, Boolean status) {
+    public Salary(Double hour, Double rate, Boolean isRewarded, Boolean contractType) {
         this.rate = rate;
         this.hour = hour;
-        this.reward = reward;
-        this.status = status;
+        this.isRewarded = isRewarded;
+        this.contractType = contractType;
     }
 
     public Double getRate() {
@@ -38,45 +42,57 @@ public class Salary {
         this.hour = hour;
     }
     
-    public Boolean getStatus() {
-        return status;
+    public Boolean getContractType() {
+        return contractType;
     }
 
-    public void setStatus(Boolean status) {
-        this.status = status;
+    public void setContractType(Boolean contractType) {
+        this.contractType = contractType;
     }
 
-    public Double getReward() {
-        return reward;
+    public Boolean getIsRewarded() {
+        return isRewarded;
     }
 
-    public void setReward(Double reward) {
-        this.reward = reward;
-    }
-    
-    public String getStatusToString(){
-        return this.status ? "Hourly" : "Salary";
-    }
-    public String getWeeklyPayAmount(Employee e){
-    double amount, overtime, weeklyHours = 40; //weeklyHours should be a constant
- 
-    if (this.reward != 0) {
-        amount = (e.getRate() * e.getHour()) * 0.10;
-    } else if (!this.status) {
-        if (getHour() <= weeklyHours) {
-            amount = e.getRate() * e.getHour();
+    public void setIsRewarded(Boolean isRewarded) {
+        if (this.isSalaried()) {
+            this.isRewarded = isRewarded;
         } else {
-            overtime = (e.getHour() - weeklyHours) * e.getRate() * 2;
-            amount = (weeklyHours * e.getRate()) + overtime;
+            this.isRewarded = false;
         }
-    } else {
-        amount = e.getRate() * weeklyHours;
     }
- 
-    return "$" + amount;
-}
+        
+    //new version    
+    public Boolean isSalaried() {
+        return !this.contractType;
+    }
     
-    public String getRewardToString(Employee e){
-        return e.getReward() != 0 ? "Yes" : "No";
+    public Double getOvertimeHours() {
+        if (this.hour <= WEEKLY_HOURS) {
+            return 0.0;
+        }
+        
+        return this.hour - WEEKLY_HOURS;
+    }
+    
+    public Double calculateWeeklyPayment() {
+        double amount, overtime;
+
+        if (this.isSalaried()) { //assalaried contract
+            amount = WEEKLY_HOURS * this.rate;
+            
+            if (this.isRewarded) {
+                amount *= REWARD_BONUS;
+            }
+        } else { //hourly contract
+            overtime = this.getOvertimeHours() * this.rate * OVERTIME_BONUS;
+            amount = (Math.min(this.hour, WEEKLY_HOURS) * this.rate) + overtime;            
+        }
+
+        return amount;
+    }
+    
+    public String contractTypeToString() {
+        return this.isSalaried() ? "Salaried" : "Hourly";
     }
 }
